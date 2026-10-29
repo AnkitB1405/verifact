@@ -1,5 +1,10 @@
 # Preliminary Architecture (for approval — nothing built yet)
 
+> **SUPERSEDED on 2026-10-29** by `docs/architecture/system-architecture.md`.
+> Kept for the record because the report's design chapter traces how decisions changed.
+> Two rows of §4 were overturned by later ADRs: the frontend (→ ADR-007, static dashboard)
+> and the queue (→ ADR-004, background tasks). Do not implement from this file.
+
 ## 1. Shape: one FastAPI service, a worker, Postgres, and a React dashboard
 
 ```
