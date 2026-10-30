@@ -16,3 +16,11 @@ models/
 .cache/
 eval/runs/
 .DS_Store
+
+# project-specific
+.venv/
+build/
+.cache/
+verifact*.db
+config/calibrator.json
+data/snapshots/

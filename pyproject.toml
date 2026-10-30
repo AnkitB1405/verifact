@@ -1,0 +1,90 @@
+[project]
+name = "verifact"
+version = "0.1.0"
+description = "Explainable hallucination detection and mitigation using trusted sources and knowledge graphs"
+requires-python = ">=3.12,<3.14"
+license = { text = "MIT" }
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "pydantic>=2.9",
+  "pydantic-settings>=2.6",
+  "sqlalchemy>=2.0",
+  "alembic>=1.14",
+  "httpx>=0.27",
+  "rank-bm25>=0.2.2",
+  "networkx>=3.3",
+  "numpy>=1.26",
+  "pyyaml>=6.0",
+  "python-json-logger>=2.0",
+]
+
+[project.optional-dependencies]
+# Transformer backends. The pipeline runs without these on the `lexical` backend;
+# quality is lower and every Verdict records which backend produced it.
+ml = [
+  "torch>=2.4",
+  "transformers>=4.44",
+  "sentence-transformers>=3.0",
+  "faiss-cpu>=1.8",
+  "spacy>=3.7",
+  "scikit-learn>=1.5",
+]
+postgres = ["psycopg[binary]>=3.2"]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=5.0",
+  "ruff>=0.7",
+  "mypy>=1.13",
+  "bandit>=1.7",
+  "pip-audit>=2.7",
+  "types-PyYAML",
+]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+verifact = ["web/*", "web/**/*", "py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "S", "C4", "RET", "PTH"]
+ignore = ["S101"]           # assert is how our self-checks work
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106", "S311"]
+
+[tool.mypy]
+python_version = "3.13"
+packages = ["verifact"]
+strict = true
+warn_unreachable = true
+disallow_untyped_defs = true
+# third-party packages without stubs
+[[tool.mypy.overrides]]
+module = ["rank_bm25.*", "networkx.*", "faiss.*", "sentence_transformers.*", "transformers.*", "spacy.*", "sklearn.*", "torch.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+  "ml: needs the transformer backends (deselect with -m 'not ml')",
+  "network: needs outbound network (deselect with -m 'not network')",
+]
+
+[tool.coverage.run]
+source = ["src/verifact"]
+omit = ["*/web/*"]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
