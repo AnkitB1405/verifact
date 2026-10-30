@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: verifact
+      POSTGRES_PASSWORD: verifact
+      POSTGRES_DB: verifact
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verifact -d verifact"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      VERIFACT_DATABASE_URL: postgresql+psycopg://verifact:verifact@db:5432/verifact
+      # Local compose only. A real deployment supplies keys from a secret store.
+      VERIFACT_API__AUTH_ENABLED: "false"
+      VERIFACT_LOG__JSON_FORMAT: "true"
+    ports:
+      - "8000:8000"
+    # Migrations run on start so a fresh volume is usable without a manual step.
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn verifact.api.app:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A job that cannot fail is not a check. Nothing here uses continue-on-error,
+# and no step is allowed to swallow a non-zero exit (CI/CD requirement, brief §8).
+permissions:
+  contents: read
+
+env:
+  VERIFACT_API__AUTH_ENABLED: "false"
+  VERIFACT_DATABASE_URL: "sqlite+pysqlite:///./build/ci.db"
+
+jobs:
+  lint:
+    name: format + lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - run: ruff format --check src tests
+      - run: ruff check --output-format=github src tests
+
+  types:
+    name: static types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - run: mypy
+
+  test:
+    name: tests + coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - run: mkdir -p build
+      # Model-backed and network tests are deselected here and run in the `ml`
+      # job below. Deselecting is recorded in the test report, not hidden.
+      - name: pytest (no model, no network)
+        run: pytest -m "not ml and not network" --cov --cov-report=xml --cov-report=term-missing --cov-fail-under=70
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: coverage, path: coverage.xml }
+
+  migrations:
+    name: migrations up and down
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - run: mkdir -p build
+      - run: alembic upgrade head
+      # FR-63: a migration that cannot be reversed is not a migration.
+      - run: alembic downgrade base
+      - run: alembic upgrade head
+
+  security:
+    name: security scans
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - name: bandit (code)
+        run: bandit -q -c pyproject.toml -r src
+      - name: pip-audit (dependencies)
+        run: pip-audit --skip-editable
+      - name: gitleaks (secrets)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  api-contract:
+    name: openapi + api tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev]"
+      - run: mkdir -p build
+      - run: pytest tests/api -m "not ml and not network"
+      - name: export openapi
+        run: python -m verifact.api.export_openapi build/openapi.json
+      - uses: actions/upload-artifact@v4
+        with: { name: openapi, path: build/openapi.json }
+
+  docker:
+    name: image build + healthcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: build
+        uses: docker/build-push-action@v6
+        with: { context: ., load: true, tags: "verifact:ci" }
+      - name: trivy image scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: verifact:ci
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
+      - name: container answers /health
+        run: |
+          docker run -d --name vf -p 8000:8000 \
+            -e VERIFACT_API__AUTH_ENABLED=false \
+            -e VERIFACT_DATABASE_URL=sqlite+pysqlite:////tmp/ci.db verifact:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8000/api/v1/health; then echo; exit 0; fi
+            sleep 2
+          done
+          echo "health check never passed"; docker logs vf; exit 1
+
+  ml:
+    name: model-backed tests
+    runs-on: ubuntu-latest
+    # Downloads ~2GB of wheels and model weights, so it does not gate every PR.
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - run: pip install -e ".[dev,ml]"
+      - run: python -m spacy download en_core_web_sm
+      - run: mkdir -p build
+      - run: pytest -m ml
