@@ -1,0 +1,100 @@
+{
+  "_comment": "Golden fixture owned by P2. Consumed by P3 (retrieval, entity linking) and P4 (aggregation tests). Regenerate with `python -m tests.unit.extraction.test_extractor` and commit in the same PR as the change that moved it.",
+  "source_text": "The Eiffel Tower, completed in 1889, is 330 metres tall. Marie Curie won the Nobel Prize in Physics in 1903 and in Chemistry in 1911. I think it is the most beautiful monument in Europe. Should we visit it? Install the package before running the demo. He later moved to Berlin.",
+  "claims": [
+    {
+      "text": "The Eiffel Tower was completed in 1889.",
+      "claim_type": "factual",
+      "checkworthy": true,
+      "standalone_interpretable": true,
+      "entities": [
+        "The Eiffel Tower"
+      ],
+      "temporal": [
+        "1889"
+      ],
+      "numerics": []
+    },
+    {
+      "text": "The Eiffel Tower is 330 metres tall.",
+      "claim_type": "factual",
+      "checkworthy": true,
+      "standalone_interpretable": true,
+      "entities": [
+        "The Eiffel Tower"
+      ],
+      "temporal": [],
+      "numerics": [
+        "330 metres"
+      ]
+    },
+    {
+      "text": "Marie Curie won the Nobel Prize in Physics in 1903.",
+      "claim_type": "factual",
+      "checkworthy": true,
+      "standalone_interpretable": true,
+      "entities": [
+        "Marie Curie",
+        "the Nobel Prize in Physics"
+      ],
+      "temporal": [
+        "1903"
+      ],
+      "numerics": []
+    },
+    {
+      "text": "Marie Curie won the Nobel Prize in Chemistry in 1911.",
+      "claim_type": "factual",
+      "checkworthy": true,
+      "standalone_interpretable": true,
+      "entities": [
+        "Marie Curie",
+        "the Nobel Prize in Chemistry"
+      ],
+      "temporal": [
+        "1911"
+      ],
+      "numerics": []
+    },
+    {
+      "text": "I think it is the most beautiful monument in Europe.",
+      "claim_type": "opinion",
+      "checkworthy": false,
+      "standalone_interpretable": true,
+      "entities": [
+        "Europe"
+      ],
+      "temporal": [],
+      "numerics": []
+    },
+    {
+      "text": "Should we visit it?",
+      "claim_type": "question",
+      "checkworthy": false,
+      "standalone_interpretable": true,
+      "entities": [],
+      "temporal": [],
+      "numerics": []
+    },
+    {
+      "text": "Install the package before running the demo.",
+      "claim_type": "instruction",
+      "checkworthy": false,
+      "standalone_interpretable": true,
+      "entities": [],
+      "temporal": [],
+      "numerics": []
+    },
+    {
+      "text": "He later moved to Berlin.",
+      "claim_type": "factual",
+      "checkworthy": true,
+      "standalone_interpretable": false,
+      "entities": [
+        "Berlin"
+      ],
+      "temporal": [],
+      "numerics": []
+    }
+  ]
+}
