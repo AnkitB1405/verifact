@@ -1,0 +1,107 @@
+{
+  "_comment": "Golden fixture owned by P3. Consumed by P4's aggregation and weighting tests so they never call a live API. Regenerate with `python -m tests.fixtures._generate_p3_fixtures`.",
+  "source_text": "The Eiffel Tower is located in Paris. The Eiffel Tower is located in Berlin. The Eiffel Tower was completed in 1889. The Eiffel Tower is 330 metres tall. Marie Curie won the Nobel Prize in Physics in 1903. Python was created by Guido van Rossum. Water boils at 100 degrees Celsius.",
+  "claims": [
+    {
+      "claim_text": "The Eiffel Tower is located in Paris.",
+      "status": "SUPPORTED",
+      "triples_checked": [
+        {
+          "subject": "The Eiffel Tower",
+          "predicate": "located_in",
+          "object": "Paris",
+          "subject_qid": "Q243"
+        }
+      ],
+      "path_evidence": [
+        [
+          "Eiffel Tower (Q243) --P131--> 7th arrondissement of Paris (Q259463)",
+          "7th arrondissement of Paris (Q259463) --P131--> Q90 (Q90)"
+        ]
+      ],
+      "notes": "Eiffel Tower: reached Q90 in 2 hops"
+    },
+    {
+      "claim_text": "The Eiffel Tower is located in Berlin.",
+      "status": "CONTRADICTED",
+      "triples_checked": [
+        {
+          "subject": "The Eiffel Tower",
+          "predicate": "located_in",
+          "object": "Berlin",
+          "subject_qid": "Q243"
+        }
+      ],
+      "path_evidence": [],
+      "notes": "[subject was ambiguous: ['Q243', 'Q18927486', 'Q18643531']] all 3 candidate senses conflict; Eiffel Tower: relation points to ['Q142', 'Q217925', 'Q259463'], not to ['Q64', 'Q2660845', 'Q821199']"
+    },
+    {
+      "claim_text": "The Eiffel Tower was completed in 1889.",
+      "status": "SUPPORTED",
+      "triples_checked": [
+        {
+          "subject": "The Eiffel Tower",
+          "predicate": "completion",
+          "object": "1889",
+          "subject_qid": "Q243"
+        }
+      ],
+      "path_evidence": [],
+      "notes": "Eiffel Tower: graph date 1889 matches the claim"
+    },
+    {
+      "claim_text": "The Eiffel Tower is 330 metres tall.",
+      "status": "SUPPORTED",
+      "triples_checked": [
+        {
+          "subject": "The Eiffel Tower",
+          "predicate": "height",
+          "object": "330 metres",
+          "subject_qid": "Q243"
+        }
+      ],
+      "path_evidence": [],
+      "notes": "Eiffel Tower: graph value +330 matches 330.0 within 2%"
+    },
+    {
+      "claim_text": "Marie Curie won the Nobel Prize in Physics in 1903.",
+      "status": "SUPPORTED",
+      "triples_checked": [
+        {
+          "subject": "Marie Curie",
+          "predicate": "award_received",
+          "object": "the Nobel Prize in Physics",
+          "subject_qid": "Q7186"
+        }
+      ],
+      "path_evidence": [
+        [
+          "Q7186",
+          "Q38104"
+        ]
+      ],
+      "notes": "Q7186: direct statement to Q38104"
+    },
+    {
+      "claim_text": "Python was created by Guido van Rossum.",
+      "status": "MISSING",
+      "triples_checked": [
+        {
+          "subject": "Python",
+          "predicate": "creator",
+          "object": "Guido van Rossum",
+          "subject_qid": "Q28865"
+        }
+      ],
+      "path_evidence": [],
+      "notes": "Python (Q28865) has no creator statement (P170/P112/P50/P86/P57); absence is not contradiction"
+    },
+    {
+      "claim_text": "Water boils at 100 degrees Celsius.",
+      "status": "NOT_APPLICABLE",
+      "triples_checked": [],
+      "path_evidence": [],
+      "notes": "no supported predicate matches this claim"
+    }
+  ]
+}

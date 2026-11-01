@@ -1,0 +1,314 @@
+{
+  "_comment": "Golden fixture owned by P3. Consumed by P4's aggregation and weighting tests so they never call a live API. Regenerate with `python -m tests.fixtures._generate_p3_fixtures`.",
+  "source_text": "The Eiffel Tower is located in Paris. The Eiffel Tower is located in Berlin. The Eiffel Tower was completed in 1889. The Eiffel Tower is 330 metres tall. Marie Curie won the Nobel Prize in Physics in 1903. Python was created by Guido van Rossum. Water boils at 100 degrees Celsius.",
+  "claims": [
+    {
+      "claim_text": "The Eiffel Tower is located in Paris.",
+      "passages": [
+        {
+          "text": "The Eiffel Tower ( EYE-f\u0259l; French: Tour Eiffel [tu\u0281 \u025bf\u025bl] ) is a lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 6.9772,
+            "dense": 0.7883,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "Locally nicknamed \"La dame de fer\" (French for \"Iron Lady\") for its use of wrought iron, it was constructed as the centrepiece of the 1889 World's Fair, and to crown the centennial anniversary of the French Revolution. Although initially criticised by some of France's leading artists and intellectuals for its design, it has since become a global cultural icon of France and one of the most recognisable structures in the world. The tower received 5,889,000 visitors in 2022. The Eiffel Tower is the most visited monument with an entrance fee in the world: 6.91 million people ascended it in 2015. It was designated a monument historique in 1964, and was named part of a UNESCO World Heritage Site (\"Paris, Banks of the Seine\") in 1991. The tower is 330 metres (1,083 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become by far the tallest human-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure in the world to surpass both the 200-metre and 300-metre mark in height. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 11 metres (36 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct. The tower has three levels for visitors, with restaurants on the first and second levels. The top level's upper platform is 276 m (906 ft) above the ground\u2014the highest public observation deck in the European Union. Tickets can be purchased to ascend by stairs or lift to the first and second levels. The climb from ground level to the first level is over 300 steps, as is the climb from the first level to the second, making the entire ascent a 600-step climb. Although there is a staircase to the top level, it is usually accessible only by lift. On this top, third level, is a private apartment built for Gustave Eiffel, who decorated it with furniture made by Jean Lachaise and invited friends such as Thomas Edison.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 6.1557,
+            "dense": 0.6696,
+            "rrf": 0.032258,
+            "relevance": 0.8324
+          }
+        },
+        {
+          "text": "Replicas of known height The tower is 330 metres (1,083 ft) tall. Other Eiffel-inspired towers are listed in the table in descending order of scale and height, imperial measurements rounded to the nearest foot:",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower_replicas_and_derivatives",
+          "title": "Eiffel Tower replicas and derivatives",
+          "published_at": "2026-10-23",
+          "scores": {
+            "bm25": 5.4906,
+            "dense": 0.63,
+            "rrf": 0.031746,
+            "relevance": 0.6702
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "The Eiffel Tower is located in Berlin.",
+      "passages": [
+        {
+          "text": "The Eiffel Tower ( EYE-f\u0259l; French: Tour Eiffel [tu\u0281 \u025bf\u025bl] ) is a lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 6.4843,
+            "dense": 0.6735,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "Replicas of known height The tower is 330 metres (1,083 ft) tall. Other Eiffel-inspired towers are listed in the table in descending order of scale and height, imperial measurements rounded to the nearest foot:",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower_replicas_and_derivatives",
+          "title": "Eiffel Tower replicas and derivatives",
+          "published_at": "2026-10-23",
+          "scores": {
+            "bm25": 5.5688,
+            "dense": 0.6,
+            "rrf": 0.031754,
+            "relevance": 0.6934
+          }
+        },
+        {
+          "text": "Locally nicknamed \"La dame de fer\" (French for \"Iron Lady\") for its use of wrought iron, it was constructed as the centrepiece of the 1889 World's Fair, and to crown the centennial anniversary of the French Revolution. Although initially criticised by some of France's leading artists and intellectuals for its design, it has since become a global cultural icon of France and one of the most recognisable structures in the world. The tower received 5,889,000 visitors in 2022. The Eiffel Tower is the most visited monument with an entrance fee in the world: 6.91 million people ascended it in 2015. It was designated a monument historique in 1964, and was named part of a UNESCO World Heritage Site (\"Paris, Banks of the Seine\") in 1991. The tower is 330 metres (1,083 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become by far the tallest human-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure in the world to surpass both the 200-metre and 300-metre mark in height. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 11 metres (36 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct. The tower has three levels for visitors, with restaurants on the first and second levels. The top level's upper platform is 276 m (906 ft) above the ground\u2014the highest public observation deck in the European Union. Tickets can be purchased to ascend by stairs or lift to the first and second levels. The climb from ground level to the first level is over 300 steps, as is the climb from the first level to the second, making the entire ascent a 600-step climb. Although there is a staircase to the top level, it is usually accessible only by lift. On this top, third level, is a private apartment built for Gustave Eiffel, who decorated it with furniture made by Jean Lachaise and invited friends such as Thomas Edison.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 5.973,
+            "dense": 0.5494,
+            "rrf": 0.031498,
+            "relevance": 0.6174
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "The Eiffel Tower was completed in 1889.",
+      "passages": [
+        {
+          "text": "As one of the most iconic and recognizable structures in the world, the Eiffel Tower, completed in 1889, has been the inspiration for the creation of over 50 similar towers around the world. Most are not exact replicas, though there are many that resemble it closely, while others look slightly different. The Eiffel Tower has also inspired other towers that are not close resembling replicas and therefore are not listed here, for example the Blackpool Tower.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower_replicas_and_derivatives",
+          "title": "Eiffel Tower replicas and derivatives",
+          "published_at": "2026-10-23",
+          "scores": {
+            "bm25": 7.3184,
+            "dense": 0.7345,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "Locally nicknamed \"La dame de fer\" (French for \"Iron Lady\") for its use of wrought iron, it was constructed as the centrepiece of the 1889 World's Fair, and to crown the centennial anniversary of the French Revolution. Although initially criticised by some of France's leading artists and intellectuals for its design, it has since become a global cultural icon of France and one of the most recognisable structures in the world. The tower received 5,889,000 visitors in 2022. The Eiffel Tower is the most visited monument with an entrance fee in the world: 6.91 million people ascended it in 2015. It was designated a monument historique in 1964, and was named part of a UNESCO World Heritage Site (\"Paris, Banks of the Seine\") in 1991. The tower is 330 metres (1,083 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become by far the tallest human-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure in the world to surpass both the 200-metre and 300-metre mark in height. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 11 metres (36 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct. The tower has three levels for visitors, with restaurants on the first and second levels. The top level's upper platform is 276 m (906 ft) above the ground\u2014the highest public observation deck in the European Union. Tickets can be purchased to ascend by stairs or lift to the first and second levels. The climb from ground level to the first level is over 300 steps, as is the climb from the first level to the second, making the entire ascent a 600-step climb. Although there is a staircase to the top level, it is usually accessible only by lift. On this top, third level, is a private apartment built for Gustave Eiffel, who decorated it with furniture made by Jean Lachaise and invited friends such as Thomas Edison.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 6.2597,
+            "dense": 0.6376,
+            "rrf": 0.032002,
+            "relevance": 0.7675
+          }
+        },
+        {
+          "text": "The Eiffel Tower ( EYE-f\u0259l; French: Tour Eiffel [tu\u0281 \u025bf\u025bl] ) is a lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 5.5682,
+            "dense": 0.6966,
+            "rrf": 0.032002,
+            "relevance": 0.7675
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "The Eiffel Tower is 330 metres tall.",
+      "passages": [
+        {
+          "text": "Replicas of known height The tower is 330 metres (1,083 ft) tall. Other Eiffel-inspired towers are listed in the table in descending order of scale and height, imperial measurements rounded to the nearest foot:",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower_replicas_and_derivatives",
+          "title": "Eiffel Tower replicas and derivatives",
+          "published_at": "2026-10-23",
+          "scores": {
+            "bm25": 7.5971,
+            "dense": 0.8648,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "Locally nicknamed \"La dame de fer\" (French for \"Iron Lady\") for its use of wrought iron, it was constructed as the centrepiece of the 1889 World's Fair, and to crown the centennial anniversary of the French Revolution. Although initially criticised by some of France's leading artists and intellectuals for its design, it has since become a global cultural icon of France and one of the most recognisable structures in the world. The tower received 5,889,000 visitors in 2022. The Eiffel Tower is the most visited monument with an entrance fee in the world: 6.91 million people ascended it in 2015. It was designated a monument historique in 1964, and was named part of a UNESCO World Heritage Site (\"Paris, Banks of the Seine\") in 1991. The tower is 330 metres (1,083 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become by far the tallest human-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure in the world to surpass both the 200-metre and 300-metre mark in height. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 11 metres (36 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct. The tower has three levels for visitors, with restaurants on the first and second levels. The top level's upper platform is 276 m (906 ft) above the ground\u2014the highest public observation deck in the European Union. Tickets can be purchased to ascend by stairs or lift to the first and second levels. The climb from ground level to the first level is over 300 steps, as is the climb from the first level to the second, making the entire ascent a 600-step climb. Although there is a staircase to the top level, it is usually accessible only by lift. On this top, third level, is a private apartment built for Gustave Eiffel, who decorated it with furniture made by Jean Lachaise and invited friends such as Thomas Edison.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 6.5072,
+            "dense": 0.6769,
+            "rrf": 0.032258,
+            "relevance": 0.8526
+          }
+        },
+        {
+          "text": "The Eiffel Tower ( EYE-f\u0259l; French: Tour Eiffel [tu\u0281 \u025bf\u025bl] ) is a lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+          "title": "Eiffel Tower",
+          "published_at": "2026-11-01",
+          "scores": {
+            "bm25": 5.9409,
+            "dense": 0.6669,
+            "rrf": 0.031746,
+            "relevance": 0.7099
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "Marie Curie won the Nobel Prize in Physics in 1903.",
+      "passages": [
+        {
+          "text": "Maria Salomea Sk\u0142odowska Curie (n\u00e9e Sk\u0142odowska; 7 November 1867 \u2013 4 July 1934), better known as Marie Curie, was a Polish and naturalised-French physicist and chemist. She shared the 1903 Nobel Prize in Physics with her husband, Pierre Curie, \"for their joint researches on the radioactivity phenomena discovered by Professor Henri Becquerel\". She won the 1911 Nobel Prize in Chemistry \"[for] the discovery of the elements radium and polonium, by the isolation of radium and the study of the nature and compounds of this remarkable element\". Curie was the first woman to win a Nobel Prize, the first person to win a Nobel Prize twice and the only person to win a Nobel Prize in two different scientific fields. She and Pierre were the first married couple to win the Nobel Prize, launching the Curie family legacy of five Nobel Prizes. She was, in 1906, the first woman to become a professor at the University of Paris. Curie was born in Warsaw, Russian Empire, where she studied at the clandestine Flying University and began her practical scientific training. In 1891, Curie followed her elder sister Bronis\u0142awa to study in Paris, where she earned her higher degrees and conducted her subsequent scientific work. In 1895, Curie married Pierre, with whom she conducted pioneering research on radioactivity\u2014a term she coined. Pierre died in 1906 in a Paris street accident. Under Curie's direction, the world's first studies were conducted into the treatment of neoplasms by the use of radioactive isotopes. She founded the Curie Institute in Paris in 1920, and the Curie Institute in Warsaw in 1932; both remain major medical research centres. During the First World War, she developed mobile radiography units to provide X-ray services to field hospitals. While a French citizen, Curie, who used both surnames, never lost her sense of Polish identity. She taught her daughters the Polish language and took them on visits to Poland. She named the first chemical element she and Pierre discovered polonium, after her native country. Curie died in 1934, aged 66, at the Sancellemoz sanatorium in Passy, Haute-Savoie, France, of aplastic anaemia likely from exposure to radiation in the course of her scientific research and in the course of her radiological work at field hospitals during the First World War. In addition to her Nobel Prizes, she received numerous other honours and tributes; in 1995, she became the first woman to be entombed on her own merits in the Paris Panth\u00e9on, and Poland declared 2011 the Year of Marie Curie during the International Year of Chemistry. Curie is the subject of numerous biographies, including Madame Curie by her daughter \u00c8ve. The synthetic element curium is named in her honour.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Marie_Curie",
+          "title": "Marie Curie",
+          "published_at": "2026-10-29",
+          "scores": {
+            "bm25": 10.4055,
+            "dense": 0.7312,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "They were the first: Nobel Prize winners Marie Curie and Ir\u00e8ne Joliot-Curie. Authors: T. V. Danylova, S. V. Komisarenko. Published in The Ukrainian Biochemical Journal. DOI 10.15407/ubj98.02.129. This article aims to highlight the major milestones in the lives of two great women scientists who became icons for many women and girls empowering them in their search for a life path. A double Nobel Prize winner in two different fields (1903 and 1911) Marie Curie discovered new elements polonium and radium, isolated radium and studied its nature and compounds. Her daughter Ir\u00e8ne Joliot-Curie, a 1935 Nobel Prize winner, synthesized new radioactive elements. Their scientific and civic activities expanded and deepened understanding of the physical world, made breakthroughs in medicine, and changed society\u2019s ideas on the role of women.\n\nKeywords: artificial radioactive elements, Ir\u00e8ne Joliot-Curie, Marie Curie, polonium, radium, the Nobel Prize, women \u2013 Nobel Prize winners, women-scientists",
+          "source_id": "crossref",
+          "url": "https://doi.org/10.15407/ubj98.02.129",
+          "title": "They were the first: Nobel Prize winners Marie Curie and Ir\u00e8ne Joliot-Curie",
+          "published_at": "2026-04-20",
+          "scores": {
+            "bm25": 9.2783,
+            "dense": 0.5726,
+            "rrf": 0.031754,
+            "relevance": 0.7122
+          }
+        },
+        {
+          "text": "Ir\u00e8ne Joliot-Curie, a Nobel Laureate in Artificial Radioactivity. Authors: Penny J. Gilmer. Published in Celebrating the 100th Anniversary of Madame Marie Sklodowska Curie\u2019s Nobel Prize in Chemistry. DOI 10.1007/978-94-6091-719-6_3",
+          "source_id": "crossref",
+          "url": "https://doi.org/10.1007/978-94-6091-719-6_3",
+          "title": "Ir\u00e8ne Joliot-Curie, a Nobel Laureate in Artificial Radioactivity",
+          "published_at": "2011-01-01",
+          "scores": {
+            "bm25": 7.2421,
+            "dense": 0.6499,
+            "rrf": 0.031514,
+            "relevance": 0.6452
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "Python was created by Guido van Rossum.",
+      "passages": [
+        {
+          "text": "Guido van Rossum: The Modern Era of Python. Authors: Charles Severance. Published in Computer. DOI 10.1109/mc.2015.73",
+          "source_id": "crossref",
+          "url": "https://doi.org/10.1109/mc.2015.73",
+          "title": "Guido van Rossum: The Modern Era of Python",
+          "published_at": "2015-03-01",
+          "scores": {
+            "bm25": 3.2705,
+            "dense": 0.6998,
+            "rrf": 0.032266,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "Python 3000. Authors: Guido van Rossum. Published in Pro Python. DOI 10.1007/978-1-4302-2758-8_17",
+          "source_id": "crossref",
+          "url": "https://doi.org/10.1007/978-1-4302-2758-8_17",
+          "title": "Python 3000",
+          "published_at": "2010-01-01",
+          "scores": {
+            "bm25": 3.3752,
+            "dense": 0.66,
+            "rrf": 0.032002,
+            "relevance": 0.9194
+          }
+        },
+        {
+          "text": "Guido van Rossum: The Early Years of Python. Authors: Charles Severance. Published in Computer. DOI 10.1109/mc.2015.45",
+          "source_id": "crossref",
+          "url": "https://doi.org/10.1109/mc.2015.45",
+          "title": "Guido van Rossum: The Early Years of Python",
+          "published_at": "2015-02-01",
+          "scores": {
+            "bm25": 3.2705,
+            "dense": 0.6944,
+            "rrf": 0.031754,
+            "relevance": 0.8438
+          }
+        }
+      ]
+    },
+    {
+      "claim_text": "Water boils at 100 degrees Celsius.",
+      "passages": [
+        {
+          "text": "The degree Celsius is the unit of temperature on the Celsius temperature scale (originally known as the centigrade scale in English), one of two temperature scales used in the International System of Units (SI), the other being the closely related Kelvin scale. The degree Celsius (symbol: \u00b0C) can refer to a specific point on the Celsius temperature scale or to a difference or range between two temperatures. It is named after the Swedish astronomer Anders Celsius (1701\u20131744), who proposed the first version of it in 1742. The unit was called centigrade in several languages (from the Latin centum, which means 100, and gradus, which means steps) for many years. In 1948, the International Committee for Weights and Measures renamed it to honor Celsius and also to remove confusion with the term for one hundredth of a gradian in some languages. Most countries use this scale, with the exception of the United States and some island territories, where the Fahrenheit scale is still used. Throughout the 19th and the first half of the 20th centuries, the scale was based on 0 \u00b0C for the freezing point of water and 100 \u00b0C for the boiling point of water at 1 atm pressure. (In Celsius's initial proposal, the values were reversed: the boiling point was 0 degrees and the freezing point was 100 degrees.)",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Celsius",
+          "title": "Celsius",
+          "published_at": "2026-10-30",
+          "scores": {
+            "bm25": 3.1309,
+            "dense": 0.4871,
+            "rrf": 0.032787,
+            "relevance": 1.0
+          }
+        },
+        {
+          "text": "In 1742, Swedish astronomer Anders Celsius (1701\u20131744) created a temperature scale that was the reverse of the scale now known as \"Celsius\": 0 represented the boiling point of water, while 100 represented the freezing point of water. In his paper Observations of two persistent degrees on a thermometer, he recounted his experiments showing that the melting point of ice is essentially unaffected by pressure. He also determined with remarkable precision how the boiling point of water varied as a function of atmospheric pressure. He proposed that the zero point of his temperature scale, being the boiling point, would be calibrated at the mean barometric pressure at mean sea level. This pressure is known as one standard atmosphere. The BIPM's 10th General Conference on Weights and Measures (CGPM) in 1954 defined one standard atmosphere to equal precisely 1,013,250 dynes per square centimeter (101.325 kPa). In 1743, the French physicist Jean-Pierre Christin, permanent secretary of the Academy of Lyon, inverted the Celsius temperature scale so that 0 represented the freezing point of water and 100 represented the boiling point of water. On 19 May 1743 he published the design of a mercury thermometer, the \"Thermometer of Lyon\" built by the craftsman Pierre Casati that used this scale. In 1744, coincident with the death of Anders Celsius, the Swedish botanist Carl Linnaeus (1707\u20131778) reversed Celsius's scale. His custom-made \"Linnaeus-thermometer\", for use in his greenhouses, was made by Daniel Ekstr\u00f6m, Sweden's leading maker of scientific instruments at the time, whose workshop was located in the basement of the Stockholm observatory. As often happened in this age before modern communications, numerous physicists, scientists, and instrument makers are credited with having independently developed this same scale; among them were Pehr Elvius, the secretary of the Royal Swedish Academy of Sciences (which had an instrument workshop) and with whom Linnaeus had been corresponding; Daniel Ekstr\u00f6m, the instrument maker; and M\u00e5rten Str\u00f6mer (1707\u20131770) who had studied astronomy under Anders Celsius. The first known Swedish document reporting temperatures in this modern \"forward\" Celsius temperature scale is the paper Hortus Upsaliensis dated 16 December 1745 that Linnaeus wrote to a student of his, Samuel Naucl\u00e9r. In it, Linnaeus recounted the temperatures inside the orangery at the University of Uppsala Botanical Garden:",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Celsius",
+          "title": "Celsius",
+          "published_at": "2026-10-30",
+          "scores": {
+            "bm25": 2.5259,
+            "dense": 0.407,
+            "rrf": 0.031746,
+            "relevance": 0.7262
+          }
+        },
+        {
+          "text": "Between 1954 and 2019, the precise definitions of the unit degree Celsius and the Celsius temperature scale used absolute zero and the temperature of the triple point of water. Since 2007, the Celsius temperature scale has been defined in terms of the kelvin, the SI base unit of thermodynamic temperature (symbol: K). Absolute zero, the lowest temperature, is now defined as being exactly 0 K and \u2212273.15 \u00b0C.",
+          "source_id": "wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Celsius",
+          "title": "Celsius",
+          "published_at": "2026-10-30",
+          "scores": {
+            "bm25": 1.6995,
+            "dense": 0.4234,
+            "rrf": 0.031054,
+            "relevance": 0.5442
+          }
+        }
+      ]
+    }
+  ]
+}
