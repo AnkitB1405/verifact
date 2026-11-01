@@ -1,0 +1,128 @@
+# Claim-to-triple predicate map. Owner: P3 (FR-23).
+#
+# Only the predicates listed here are checkable against the knowledge graph.
+# Anything else returns NOT_APPLICABLE - which is honest, and very different
+# from MISSING. The distinction matters because the brief forbids treating
+# absence of evidence as falsehood, and `shiralkar2017streams` is limited
+# precisely by its inability to tell a missing relation from a false one.
+#
+# transitive: walk the relation up to kg.max_hops before deciding. Needed
+# because Wikidata's "located in the administrative territorial entity" for the
+# Eiffel Tower is the 7th arrondissement (Q259463), not Paris (Q90). Without
+# transitivity, "The Eiffel Tower is in Paris" would come back CONTRADICTED -
+# a false positive on a true claim, the worst failure this project can produce.
+
+predicates:
+  - name: located_in
+    pids: [P131, P17, P276]
+    value_type: entity
+    transitive: true
+    patterns:
+      - '\bis (?:located |situated )?in\b'
+      - '\bis in\b'
+      - '\bstands in\b'
+      - '\bbased in\b'
+
+  - name: capital_of
+    pids: [P1376]
+    value_type: entity
+    transitive: false
+    patterns:
+      - '\bis the capital (?:city )?of\b'
+
+  - name: birthplace
+    pids: [P19]
+    value_type: entity
+    transitive: true
+    patterns:
+      - '\bwas born in\b'
+      - '\bborn in\b'
+
+  - name: deathplace
+    pids: [P20]
+    value_type: entity
+    transitive: true
+    patterns:
+      - '\bdied in\b'
+
+  - name: creator
+    pids: [P170, P112, P50, P86, P57]
+    value_type: entity
+    transitive: false
+    patterns:
+      - '\bwas created by\b'
+      - '\bwas designed by\b'
+      - '\bwas written by\b'
+      - '\bwas founded by\b'
+      - '\bwas directed by\b'
+      - '\bwas composed by\b'
+
+  - name: award_received
+    pids: [P166]
+    value_type: entity
+    transitive: false
+    patterns:
+      - '\bwon\b'
+      - '\breceived the\b'
+      - '\bwas awarded\b'
+
+  # Date predicates are split by milestone, and each unions several properties.
+  #
+  # Found during testing: mapping "was completed in" to P571 (inception) alone
+  # made "The Eiffel Tower was completed in 1889" come back CONTRADICTED,
+  # because P571 for Q243 is 1887-01-28 - when construction *started*. The
+  # completion date lives in P1619 (date of official opening), 1889-03-31.
+  #
+  # A date claim is therefore SUPPORTED when ANY of the milestone properties
+  # matches. That is deliberately permissive: sources genuinely disagree about
+  # which milestone "completed" names, and the cost of being wrong in the
+  # permissive direction is MISSING or a weak SUPPORTED, while the cost in the
+  # strict direction is a false CONTRADICTED on a true claim - the failure this
+  # project exists to avoid. Written up in docs/testing/error-analysis.md.
+
+  - name: completion
+    pids: [P1619, P571, P729]
+    value_type: time
+    transitive: false
+    patterns:
+      - '\bwas completed in\b'
+      - '\bwas finished in\b'
+      - '\bwas inaugurated in\b'
+      - '\bopened in\b'
+
+  - name: inception
+    pids: [P571, P1619]
+    value_type: time
+    transitive: false
+    patterns:
+      - '\bwas built in\b'
+      - '\bwas founded in\b'
+      - '\bwas established in\b'
+      - '\bconstruction began in\b'
+
+  - name: publication
+    pids: [P577]
+    value_type: time
+    transitive: false
+    patterns:
+      - '\bwas published in\b'
+      - '\bwas released in\b'
+
+  - name: height
+    pids: [P2048]
+    value_type: quantity
+    transitive: false
+    # Tolerance is fractional. The Eiffel Tower is 300 m, 324 m or 330 m
+    # depending on whether the antenna counts, and Wikidata holds all three.
+    tolerance: 0.02
+    patterns:
+      - '\bis \d[\d.,]* ?(?:m|metres|meters|ft|feet) (?:tall|high)\b'
+      - '\bstands \d[\d.,]* ?(?:m|metres|meters)\b'
+
+  - name: country
+    pids: [P17]
+    value_type: entity
+    transitive: true
+    patterns:
+      - '\bis a country\b'
+      - '\bin the country of\b'
