@@ -1,0 +1,67 @@
+# Source registry. Owner: P3.
+#
+# Evidence may only come from a source listed here (FR-13). An unregistered
+# source is assigned the lowest tier and logged, never silently dropped (FR-14) -
+# dropping it would hide a coverage gap, while trusting it would violate the
+# brief's rule that no unrestricted web result is automatically trustworthy.
+#
+# Tier justification, which must be defensible in the viva rather than vibes:
+#
+#   1  Structured, curated, versioned, with provenance for individual statements.
+#      Wikidata statements carry references and edit history.
+#   2  Editorially reviewed and correctable, with visible revision history.
+#      Wikipedia: not authoritative, but auditable and quick to correct.
+#   3  Peer-reviewed or official-record metadata. Authoritative for what it
+#      covers (a DOI, a title, a publication date) and silent on everything else.
+#   4  A locally supplied corpus. Trust is whatever the operator's curation is
+#      worth, so it sits below anything with public review.
+#   5  Unknown or unregistered. Retrievable only when explicitly enabled, and
+#      weighted so it can never carry a verdict on its own.
+#
+# halflife_days drives the recency decay. Encyclopaedic and academic facts age
+# slowly; news ages fast. `null` means do not decay (a mathematical constant does
+# not become less true).
+
+defaults:
+  halflife_days: null
+
+sources:
+  - id: wikidata
+    name: Wikidata
+    kind: knowledge_base
+    reliability_tier: 1
+    base_reliability: 0.90
+    halflife_days: 1825        # 5 years: statements are maintained but can go stale
+    hosts: ["www.wikidata.org", "query.wikidata.org"]
+
+  - id: wikipedia
+    name: Wikipedia (English)
+    kind: encyclopaedia
+    reliability_tier: 2
+    base_reliability: 0.75
+    halflife_days: 1095        # 3 years
+    hosts: ["en.wikipedia.org"]
+
+  - id: crossref
+    name: Crossref
+    kind: academic
+    reliability_tier: 3
+    base_reliability: 0.70
+    halflife_days: null        # publication metadata does not decay
+    hosts: ["api.crossref.org"]
+
+  - id: local_corpus
+    name: Operator-supplied local corpus
+    kind: local_corpus
+    reliability_tier: 4
+    base_reliability: 0.50
+    halflife_days: 730
+    hosts: []
+
+  - id: unknown
+    name: Unregistered source
+    kind: unknown
+    reliability_tier: 5
+    base_reliability: 0.15
+    halflife_days: 365
+    hosts: []
