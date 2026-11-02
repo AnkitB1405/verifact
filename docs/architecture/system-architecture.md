@@ -155,17 +155,46 @@ count as two independent confirmations — the lesson taken from `kuhn2023semant
 
 ### 6.2 The status decision rule
 
+Implemented in `verification/aggregate.py`; this and the code must not diverge.
+
 ```
-if coverage < τ_cov                      -> UNVERIFIABLE
-elif KGCheck == CONTRADICTED              -> CONTRADICTED
-elif max(E, C) < τ_weak                   -> INSUFFICIENT_EVIDENCE
-elif E - C > τ_sup and not outdated(c)    -> SUPPORTED
-elif E - C > τ_sup and outdated(c)        -> OUTDATED
-elif C - E > τ_con                        -> CONTRADICTED
-elif E > τ_weak and C > τ_weak            -> AMBIGUOUS   (sources disagree)
-elif not standalone_interpretable(c)      -> AMBIGUOUS   (unresolved reference)
-else                                      -> INSUFFICIENT_EVIDENCE
+if coverage < tau_cov                      -> UNVERIFIABLE   (nothing retrieved)
+elif similarity_max < tau_sim              -> UNVERIFIABLE   (nothing on topic)
+elif KGCheck == CONTRADICTED               -> CONTRADICTED
+elif KGCheck == SUPPORTED:
+    if C - E > tau_con                     -> AMBIGUOUS      (KG and text disagree)
+    elif max(E, C) < tau_weak              -> SUPPORTED      (KG confirms, text silent)
+elif max(E, C) < tau_weak                  -> INSUFFICIENT_EVIDENCE
+elif E >= tau_weak and C >= tau_weak       -> AMBIGUOUS      (sources disagree)
+elif E - C > tau_sup:
+    OUTDATED if outdated(c) else SUPPORTED
+elif C - E > tau_con                       -> CONTRADICTED
+elif not standalone_interpretable(c)       -> AMBIGUOUS      (unresolved reference)
+else                                       -> INSUFFICIENT_EVIDENCE
 ```
+
+Three branches were added after the first end-to-end run exposed real failures,
+and each is a documented finding rather than a tweak:
+
+* **`similarity_max < tau_sim` -> UNVERIFIABLE** (EA-07). `relevance` is min-max
+  scaled per claim, so the best candidate always scores 1.0 and coverage could
+  never signal "nothing relevant was found". Absolute similarity can.
+* **`KGCheck == SUPPORTED` honoured** (EA-05 fallout). The original rule
+  consulted the graph only for contradiction. A tier-1 structured confirmation
+  was therefore overridable by text NLI, which produced `CONTRADICTED` for
+  "Marie Curie won the Nobel Prize in Physics in 1903" - a false positive on a
+  true claim, with the graph confirming it.
+* **KG and text disagreeing -> AMBIGUOUS, not CONTRADICTED.** Asserting
+  contradiction while our most reliable source confirms the claim is the failure
+  mode this project exists to avoid.
+
+`MISSING` appears nowhere in this rule, by design (FR-24): the graph not holding
+a fact is silence, not denial.
+
+Thresholds live in configuration. **The committed values are placeholders.** They
+are fitted on the dev split and frozen with a recorded commit hash before test is
+touched (ADR-005), and EA-08 is an open finding that must not be closed by moving
+one of them.
 
 `outdated(c)` is true when every supporting passage predates a contradicting passage of
 at-least-equal reliability tier, and both carry publication dates. **A `MISSING` KG result

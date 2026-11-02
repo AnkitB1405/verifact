@@ -88,3 +88,113 @@ actually justified the verdict. Now reads "graph value +330 matches 330.0".
 **Lesson:** the verdict was right and the explanation was misleading. For a
 system whose contribution is explainability, a correct answer with a misleading
 reason is still a defect.
+
+---
+
+## EA-05 — The NLI model reports contradiction for merely irrelevant passages
+
+**Observed:** premise *"The Eiffel Tower is a wrought-iron lattice tower on the
+Champ de Mars in Paris, France."* against hypothesis *"Water boils at 100 degrees
+Celsius."* → `cross-encoder/nli-deberta-v3-small` gives
+**contradiction 1.000**, entailment 0.000, neutral 0.000.
+
+The correct label is **neutral**: the passage says nothing at all about boiling
+water. The model is confidently wrong, at probability 1.0.
+
+**Why it matters:** contradiction probability feeds `C` in the aggregation
+formula. If retrieval returns an off-topic passage, that passage pushes the claim
+towards `CONTRADICTED` — a false positive on a claim that may well be true, which
+is the failure mode this project is built to avoid.
+
+**Containment, not a fix.** We do not retrain the model. Three existing
+mechanisms limit the damage, and this finding is the justification for all three:
+
+1. Every passage is weighted by its retrieval relevance, so an off-topic passage
+   contributes little to `C`.
+2. Stage S1 similarity gates evidence coverage, so a set of off-topic passages
+   lowers coverage and routes the claim to `UNVERIFIABLE` or
+   `INSUFFICIENT_EVIDENCE` instead of a verdict.
+3. The KG stage can only ever *add* a contradiction signal for a predicate it
+   genuinely checked.
+
+**Honest limitation:** containment is not elimination. A passage that is
+off-topic but scores high on retrieval relevance will still push `C` up. This is
+recorded in Known Limitations, and quantifying it is a Phase 10 experiment (the
+false-positive slice of `verifact-stress`), not a claim we make now.
+
+---
+
+## EA-06 — The lexical NLI fallback scored an entity substitution as entailed
+
+**Observed:** with the transformer backend unavailable, premise *"...on the Champ
+de Mars in Paris, France."* against *"The Eiffel Tower is located in Berlin."*
+gave entailment **0.71**.
+
+**Cause:** the fallback scored token coverage. The claim shares "the", "Eiffel",
+"Tower", "is", "located", "in" with the premise; only "Berlin" differs, and
+neither the negation nor the numeric check fired.
+
+**Fix:** a named entity present in the hypothesis but absent from the premise now
+yields **neutral**.
+
+**Why neutral and not contradiction:** the passage does not mention Berlin, so it
+does not speak to the claim. Returning contradiction would infer falsehood from
+absence — the exact error the six-status scheme exists to prevent. The
+consequence is that the lexical backend **under-detects contradictions**, which
+is the safe direction, and that is stated wherever its numbers are reported.
+
+---
+
+## EA-07 — Min-max relevance made every claim look covered
+
+**Observed:** *"My neighbour's cat is called Mitzi."* → `INSUFFICIENT_EVIDENCE`
+with `evidence_coverage = 0.43`. The correct status is `UNVERIFIABLE`: no trusted
+source covers a private fact about someone's pet.
+
+**Cause:** a design flaw, not a typo. `relevance` is min-max scaled *within one
+claim's candidate set* (`rankers.minmax`), so the best candidate always scores
+1.0 — even when every candidate is unrelated. Because coverage is built from
+weights, and weights include relevance, **coverage could never report that
+retrieval had found nothing relevant.** Every claim looked covered.
+
+**Fix:** absolute claim-passage similarity now gates the status rule
+(`tau_sim`, default 0.35). Below it the verdict is `UNVERIFIABLE`.
+
+**Why this one is instructive:** stage S1's docstring already said its job was to
+answer "is this passage even about the claim?" — and the aggregation rule never
+read it. The signal existed, was computed on every claim, was stored in
+`ComponentScores`, and was ignored by the only function that mattered. Keeping
+component scores separate is what made the gap findable.
+
+**Status:** fixed. Test:
+`tests/unit/verification/test_aggregate.py::test_off_topic_evidence_is_unverifiable`.
+
+---
+
+## EA-08 — Fabricated entities return CONTRADICTED instead of UNVERIFIABLE (open)
+
+**Observed:** *"Zorblax Prime orbits the star Kelvaris in the Andromeda sector."*
+— a wholly invented claim — returns `CONTRADICTED` with `C = 0.819`,
+`similarity_max = 0.529`.
+
+**Why:** retrieval returns passages about the Andromeda galaxy, which are
+*topically* close enough to clear `tau_sim = 0.35` while saying nothing about the
+invented entity. The NLI model then does what EA-05 describes and reports high
+contradiction for an irrelevant passage.
+
+**Status: OPEN, deliberately not fixed.** Raising `tau_sim` until this example
+comes out right would be fitting a threshold to a single hand-picked case, which
+ADR-005 explicitly forbids — and the current threshold values are placeholders
+that Phase 10 fits on the dev split. Changing one now to make a demo look better
+is how an evaluation becomes meaningless.
+
+**What is actually needed:** entity-grounded coverage. If no retrieved passage
+mentions the claim's subject entity at all, the claim is `UNVERIFIABLE`
+regardless of topical similarity. That is a Phase 10 experiment with a measurable
+effect on the false-positive rate, not a threshold tweak.
+
+**Consequence for the project's claims:** VeriFact as it stands does *not*
+reliably distinguish a fabricated entity from a contradicted fact. The brief asks
+for fabricated claims to be identified; we identify them as *not supported*, and
+the specific label may be wrong. This belongs in Known Limitations and must not
+be glossed over in the report or the demo.
