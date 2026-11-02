@@ -75,9 +75,16 @@ class VerificationSettings(BaseModel):
     # placeholders until the freeze; the frozen values live in config/thresholds.yaml
     # and the freeze commit is recorded in docs/testing/test-report.md.
     tau_cov: float = Field(default=0.15, ge=0.0, le=1.0)
-    #: Minimum absolute claim-passage similarity for evidence to count as
-    #: on topic at all. Guards against min-max relevance inflation (EA-07).
+    #: Minimum absolute claim-passage similarity for evidence to count as on
+    #: topic at all. Guards against min-max relevance inflation (EA-07).
+    #: Calibrated for cosine similarity over sentence embeddings.
     tau_sim: float = Field(default=0.35, ge=0.0, le=1.0)
+    #: The same gate for the lexical backend, which computes Jaccard token
+    #: overlap. Jaccard and cosine are different measures on different scales -
+    #: a paraphrase scores ~0.8 by cosine and ~0.2 by Jaccard - so one threshold
+    #: cannot serve both, and reusing tau_sim marked every claim UNVERIFIABLE on
+    #: the fallback backend (EA-09).
+    tau_sim_lexical: float = Field(default=0.12, ge=0.0, le=1.0)
     tau_weak: float = Field(default=0.35, ge=0.0, le=1.0)
     tau_sup: float = Field(default=0.20, ge=0.0, le=1.0)
     tau_con: float = Field(default=0.20, ge=0.0, le=1.0)

@@ -34,7 +34,7 @@ from verifact.retrieval.retriever import retrieve_for_claim
 from verifact.verification.aggregate import Aggregated, aggregate, build_verdict
 from verifact.verification.calibrate import Calibrator, calibrate_verdict
 from verifact.verification.nli import NliResult, infer
-from verifact.verification.similarity import similarity_scores, summarise
+from verifact.verification.similarity import active_backend, similarity_scores, summarise
 from verifact.verification.weighting import WeightedPassage, weigh
 
 _log = get_logger(__name__)
@@ -85,6 +85,13 @@ def _run_pass(
 
     tiers = {sid: registry.get(sid).reliability_tier for sid in registry.source_ids}
     kg_reliability = registry.get("wikidata").base_reliability
+    # Cosine and Jaccard are different measures; the gate must match the one
+    # that produced the score (EA-09).
+    tau_sim = (
+        settings.verification.tau_sim
+        if active_backend(settings.retrieval) == "dense"
+        else settings.verification.tau_sim_lexical
+    )
     result = aggregate(
         claim,
         weighted,
@@ -95,6 +102,7 @@ def _run_pass(
         settings.verification,
         similarity_max=sim_max,
         kg_source_reliability=kg_reliability,
+        tau_sim_override=tau_sim,
     )
     return result, weighted, nli_kept, sim_max, sim_mean
 

@@ -120,6 +120,7 @@ def aggregate(
     settings: VerificationSettings | None = None,
     similarity_max: float = 1.0,
     kg_source_reliability: float = 0.9,
+    tau_sim_override: float | None = None,
 ) -> Aggregated:
     """Combine every signal into one of the six statuses.
 
@@ -144,6 +145,8 @@ def aggregate(
     # Reliability of the knowledge base itself. Any verdict the graph decides
     # takes its confidence from this rather than from the text margin.
     kg_reliability = kg_source_reliability
+    # The on-topic gate depends on which similarity measure produced the score.
+    tau_sim = cfg.tau_sim if tau_sim_override is None else tau_sim_override
 
     # 1. Nothing usable came back. The claim may be perfectly true.
     if not weighted or coverage < cfg.tau_cov:
@@ -165,7 +168,7 @@ def aggregate(
     #     nothing. Without this branch a private fact nobody has published
     #     ("my neighbour's cat is called Mitzi") gets graded on whatever the
     #     retriever happened to return.
-    if similarity_max < cfg.tau_sim:
+    if similarity_max < tau_sim:
         return Aggregated(
             entail,
             contra,
@@ -174,10 +177,10 @@ def aggregate(
             VerdictStatus.UNVERIFIABLE,
             "similarity",
             f"no retrieved passage is on topic (best similarity {similarity_max:.3f} "
-            f"< {cfg.tau_sim}); no trusted source appears to cover this claim",
+            f"< {tau_sim}); no trusted source appears to cover this claim",
             # The further below the on-topic threshold, the surer we are that
             # no trusted source covers this claim.
-            confidence=round(1.0 - min(similarity_max / max(cfg.tau_sim, 1e-9), 1.0), 6),
+            confidence=round(1.0 - min(similarity_max / max(tau_sim, 1e-9), 1.0), 6),
         )
 
     # 2. The knowledge graph actively holds a conflicting value. Only

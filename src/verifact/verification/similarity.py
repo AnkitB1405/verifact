@@ -36,6 +36,18 @@ def _jaccard(a: str, b: str) -> float:
     return len(left & right) / len(left | right)
 
 
+def active_backend(settings: RetrievalSettings | None = None) -> str:
+    """Which similarity measure will actually be used: "dense" or "lexical".
+
+    The caller needs this to pick the right on-topic threshold, since cosine and
+    Jaccard are not on a comparable scale.
+    """
+    cfg = settings or get_settings().retrieval
+    if cfg.backend == "lexical":
+        return "lexical"
+    return "dense" if load_embedder(cfg.embedding_model) is not None else "lexical"
+
+
 def similarity_scores(
     claim_text: str,
     passages: list[EvidencePassage],
