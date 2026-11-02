@@ -75,6 +75,9 @@ class VerificationSettings(BaseModel):
     # placeholders until the freeze; the frozen values live in config/thresholds.yaml
     # and the freeze commit is recorded in docs/testing/test-report.md.
     tau_cov: float = Field(default=0.15, ge=0.0, le=1.0)
+    #: Minimum absolute claim-passage similarity for evidence to count as
+    #: on topic at all. Guards against min-max relevance inflation (EA-07).
+    tau_sim: float = Field(default=0.35, ge=0.0, le=1.0)
     tau_weak: float = Field(default=0.35, ge=0.0, le=1.0)
     tau_sup: float = Field(default=0.20, ge=0.0, le=1.0)
     tau_con: float = Field(default=0.20, ge=0.0, le=1.0)
