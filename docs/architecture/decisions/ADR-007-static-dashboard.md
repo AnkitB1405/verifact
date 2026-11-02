@@ -19,13 +19,21 @@ unless the bundle is pre-built and committed.
 
 ## Decision
 
-**One static HTML file plus a small JS module and Tailwind via CDN, served by FastAPI from
-`src/verifact/web/`.** No build step, no `node_modules`, no framework. Tailwind's CDN build is
-vendored into `web/vendor/` so the dashboard also works with the network off.
+**One static HTML file, one hand-written stylesheet and one plain JS module, served by
+FastAPI from `src/verifact/web/`.** No build step, no `node_modules`, no framework, and - as
+built - **no external asset at all**.
+
+The original decision said "Tailwind via CDN, vendored for offline use". On implementation
+that vendoring step turned out to be the only thing standing between the dashboard and being
+genuinely self-contained, and the whole dashboard needs about 160 lines of CSS. Writing them
+removed a vendored third-party file, a licence to track and a dependency to audit, so the
+stylesheet is hand-written instead. Recorded here rather than silently diverging from the
+ADR.
 
 ## Consequences
 
-- `git clone && make dev` gives a working dashboard. No Node required anywhere, including CI.
+- `git clone && make dev` gives a working dashboard. No Node required anywhere, including CI,
+  and no network request for an asset.
 - One deployable artifact; the dashboard cannot be out of step with the API version serving it.
 - Offline demo works, as required.
 - **What we give up:** component reuse, type-checked API responses in the frontend, and

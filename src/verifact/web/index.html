@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriFact</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>VeriFact</h1>
+  <p class="sub">Claim-level verification against trusted sources. Reports <strong>attribution</strong>, not truth.</p>
+</header>
+
+<main>
+  <section id="input-view">
+    <label for="text">AI-generated text to check</label>
+    <textarea id="text" rows="6" placeholder="Paste a paragraph of AI-generated text…">The Eiffel Tower was completed in 1950. The Eiffel Tower is located in Paris. My neighbour's cat is called Mitzi.</textarea>
+    <div class="row">
+      <label for="asof">As of <input type="date" id="asof"></label>
+      <button id="run" class="primary">Analyse document</button>
+      <button id="run-one">Verify first claim only</button>
+      <span id="spinner" hidden>working…</span>
+    </div>
+    <p id="error" class="error" hidden></p>
+  </section>
+
+  <section id="summary-view" hidden>
+    <h2>Summary</h2>
+    <div id="counts" class="counts"></div>
+    <p class="note" id="provenance"></p>
+    <h3>Annotated text</h3>
+    <pre id="annotated" class="annotated"></pre>
+    <div class="row">
+      <button id="export">Export report (JSON)</button>
+      <button id="toggle-diff">Original vs corrected</button>
+    </div>
+  </section>
+
+  <section id="diff-view" hidden>
+    <h2>Original vs corrected</h2>
+    <div class="diff" id="diff"></div>
+  </section>
+
+  <section id="claims-view" hidden>
+    <h2>Claims</h2>
+    <p class="note">Select a claim to inspect its evidence and component scores.</p>
+    <ul id="claims" class="claims"></ul>
+  </section>
+
+  <section id="detail-view" hidden>
+    <h2>Claim detail</h2>
+    <div id="detail"></div>
+  </section>
+</main>
+
+<footer>
+  <p>
+    Confidence is labelled <em>uncalibrated</em> unless a calibrator has been fitted on a
+    held-out split. An uncalibrated score is not a probability.
+    <code>UNVERIFIABLE</code> means no trusted source covering the claim was found — the claim
+    may still be true.
+  </p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
