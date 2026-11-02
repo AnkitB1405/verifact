@@ -84,6 +84,7 @@ def _run_pass(
     nli_kept = [nli_by_id[wp.passage.id] for wp in weighted if wp.passage.id in kept_ids]
 
     tiers = {sid: registry.get(sid).reliability_tier for sid in registry.source_ids}
+    kg_reliability = registry.get("wikidata").base_reliability
     result = aggregate(
         claim,
         weighted,
@@ -93,6 +94,7 @@ def _run_pass(
         tiers,
         settings.verification,
         similarity_max=sim_max,
+        kg_source_reliability=kg_reliability,
     )
     return result, weighted, nli_kept, sim_max, sim_mean
 

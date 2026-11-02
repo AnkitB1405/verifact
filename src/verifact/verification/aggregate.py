@@ -53,6 +53,14 @@ class Aggregated:
     #: Which signal decided the status, named in the explanation (FR-36).
     deciding_component: str
     rationale: str
+    #: How decisive the *deciding* signal was, in [0, 1].
+    #:
+    #: Set by the branch that made the decision rather than computed once from
+    #: |E - C|. A graph-decided verdict whose confidence described the text
+    #: margin was incoherent: the explanation named kg_consistency while the
+    #: number described a signal that had not decided anything. Each branch
+    #: documents its own measure.
+    confidence: float = 0.0
 
 
 def _weighted_mean(weights: list[float], values: list[float]) -> float:
@@ -111,6 +119,7 @@ def aggregate(
     registry_tier: dict[str, int],
     settings: VerificationSettings | None = None,
     similarity_max: float = 1.0,
+    kg_source_reliability: float = 0.9,
 ) -> Aggregated:
     """Combine every signal into one of the six statuses.
 
@@ -132,6 +141,9 @@ def aggregate(
     agreement = cross_source_agreement(weighted, entail_probs)
 
     kg_status = kg_check.status if kg_check else KGStatus.NOT_APPLICABLE
+    # Reliability of the knowledge base itself. Any verdict the graph decides
+    # takes its confidence from this rather than from the text margin.
+    kg_reliability = kg_source_reliability
 
     # 1. Nothing usable came back. The claim may be perfectly true.
     if not weighted or coverage < cfg.tau_cov:
@@ -144,6 +156,8 @@ def aggregate(
             "evidence_coverage",
             f"no usable evidence was retrieved (coverage {coverage:.3f} < {cfg.tau_cov}); "
             "this is a statement about retrieval, not about the claim",
+            # Confidence that nothing covers the claim, not that it is false.
+            confidence=round(1.0 - min(coverage, 1.0), 6),
         )
 
     # 1b. Evidence came back but none of it is about this claim. Distinct from
@@ -161,6 +175,9 @@ def aggregate(
             "similarity",
             f"no retrieved passage is on topic (best similarity {similarity_max:.3f} "
             f"< {cfg.tau_sim}); no trusted source appears to cover this claim",
+            # The further below the on-topic threshold, the surer we are that
+            # no trusted source covers this claim.
+            confidence=round(1.0 - min(similarity_max / max(cfg.tau_sim, 1e-9), 1.0), 6),
         )
 
     # 2. The knowledge graph actively holds a conflicting value. Only
@@ -174,6 +191,9 @@ def aggregate(
             VerdictStatus.CONTRADICTED,
             "kg_consistency",
             f"the knowledge graph holds a conflicting value: {kg_check.notes if kg_check else ''}",
+            # A graph statement is categorical, so the uncertainty lives in
+            # the source, not in a margin. The text did not decide this.
+            confidence=kg_reliability,
         )
 
     # 2b. The graph actively confirms the claim. A tier-1 structured source
@@ -194,6 +214,9 @@ def aggregate(
                 f"the knowledge graph confirms this relation but the retrieved text "
                 f"contradicts it (C={contra:.3f} vs E={entail:.3f}); the two evidence "
                 "types disagree, so no single verdict is given",
+                # Confident that the two evidence types disagree, which is
+                # exactly what AMBIGUOUS asserts here.
+                confidence=round(min(contra, kg_reliability), 6),
             )
         if max(entail, contra) < cfg.tau_weak:
             return Aggregated(
@@ -205,6 +228,7 @@ def aggregate(
                 "kg_consistency",
                 "the knowledge graph confirms this relation and the retrieved text "
                 f"does not dispute it (E={entail:.3f}, C={contra:.3f})",
+                confidence=kg_reliability,
             )
 
     # 3. Evidence exists but settles nothing either way.
@@ -218,6 +242,8 @@ def aggregate(
             "nli",
             f"evidence was retrieved but neither entails nor contradicts the claim "
             f"(E={entail:.3f}, C={contra:.3f}, both below {cfg.tau_weak})",
+            # Sure it settles nothing, in proportion to how weak both sides are.
+            confidence=round(1.0 - max(entail, contra) / max(cfg.tau_weak, 1e-9), 6),
         )
 
     # 4. Sources of comparable standing disagree.
@@ -231,6 +257,8 @@ def aggregate(
             "source_disagreement",
             f"trusted sources disagree (E={entail:.3f}, C={contra:.3f}); "
             "the claim cannot be given one verdict as written",
+            # Both sides strong at once is maximal disagreement.
+            confidence=round(min(entail, contra), 6),
         )
 
     # 5. Supported - unless the support is stale and something newer disagrees.
@@ -245,6 +273,7 @@ def aggregate(
                 "recency",
                 "the claim is supported only by evidence older than a newer, "
                 "at-least-equally-reliable source that disagrees",
+                confidence=round(min(abs(entail - contra), 1.0), 6),
             )
         return Aggregated(
             entail,
@@ -254,6 +283,7 @@ def aggregate(
             VerdictStatus.SUPPORTED,
             "nli",
             f"trusted evidence entails the claim (E={entail:.3f} vs C={contra:.3f})",
+            confidence=round(min(abs(entail - contra), 1.0), 6),
         )
 
     # 6. Contradicted by the text evidence.
@@ -266,6 +296,7 @@ def aggregate(
             VerdictStatus.CONTRADICTED,
             "nli",
             f"trusted evidence contradicts the claim (C={contra:.3f} vs E={entail:.3f})",
+            confidence=round(min(abs(entail - contra), 1.0), 6),
         )
 
     # 7. A claim that is not interpretable standalone cannot be given a verdict.
@@ -278,6 +309,9 @@ def aggregate(
             VerdictStatus.AMBIGUOUS,
             "interpretability",
             "the claim contains an unresolved reference, so it cannot be verified as written",
+            # Not a statistical judgement: the referent is either resolved or
+            # it is not, and the extractor already established that it is not.
+            confidence=1.0,
         )
 
     return Aggregated(
@@ -289,6 +323,7 @@ def aggregate(
         "nli",
         f"the evidence leans neither way decisively (E={entail:.3f}, C={contra:.3f}; "
         f"margin below {cfg.tau_sup}/{cfg.tau_con})",
+        confidence=round(1.0 - min(abs(entail - contra) / max(cfg.tau_sup, 1e-9), 1.0), 6),
     )
 
 
@@ -340,7 +375,7 @@ def build_verdict(
     return Verdict(
         claim_id=claim.id,
         status=result.status,
-        confidence=round(min(abs(result.entail - result.contra), 1.0), 6),
+        confidence=round(min(max(result.confidence, 0.0), 1.0), 6),
         calibrated=False,
         component_scores=scores,
         kg_check=kg_check,
