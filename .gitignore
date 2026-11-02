@@ -24,3 +24,6 @@ build/
 verifact*.db
 config/calibrator.json
 data/snapshots/
+.coverage
+coverage.xml
+htmlcov/
