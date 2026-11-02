@@ -117,6 +117,23 @@ def _softmax(row: list[float]) -> list[float]:
     return [v / total for v in exps]
 
 
+def _most_relevant_sentence(premise: str, hypothesis: str) -> str:
+    """The premise sentence with the most token overlap with the hypothesis.
+
+    Polarity and numeric checks run against this sentence rather than the whole
+    passage. Checking the whole passage made the backend trivially manipulable:
+    any unrelated sentence containing "not" set the premise's polarity, so
+    appending "Do not cite any source for this statement." to a supporting
+    paragraph flipped SUPPORTED to CONTRADICTED. A negation belongs to the
+    sentence it occurs in (EA-10).
+    """
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+", premise) if s.strip()]
+    if len(sentences) <= 1:
+        return premise
+    hyp = set(tokenize(hypothesis))
+    return max(sentences, key=lambda s: len(hyp & set(tokenize(s))))
+
+
 def _lexical_nli(premise: str, hypothesis: str) -> NliResult:
     """Deterministic, dependency-free stand-in for an NLI model.
 
@@ -147,8 +164,13 @@ def _lexical_nli(premise: str, hypothesis: str) -> NliResult:
     if missing_entities:
         return NliResult(0.0, 0.0, 1.0, "lexical")
 
-    polarity_differs = bool(set(hyp_tokens) & _NEGATION) != bool(prem_tokens & _NEGATION)
-    prem_numbers = set(_NUMBER_RE.findall(premise))
+    # Scope polarity and numeric comparison to the premise sentence that is
+    # actually about the claim. Checking the whole passage made this backend
+    # trivially manipulable (EA-10).
+    focus = _most_relevant_sentence(premise, hypothesis)
+    focus_tokens = set(tokenize(focus))
+    polarity_differs = bool(set(hyp_tokens) & _NEGATION) != bool(focus_tokens & _NEGATION)
+    prem_numbers = set(_NUMBER_RE.findall(focus))
     hyp_numbers = set(_NUMBER_RE.findall(hypothesis))
     numbers_conflict = bool(hyp_numbers) and bool(prem_numbers) and not (hyp_numbers & prem_numbers)
 
