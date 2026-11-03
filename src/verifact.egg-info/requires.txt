@@ -10,6 +10,8 @@ networkx>=3.3
 numpy>=1.26
 pyyaml>=6.0
 python-json-logger>=2.0
+msgpack>=1.2.3
+urllib3>=2.8.0
 
 [dev]
 pytest>=8.3

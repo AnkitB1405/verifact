@@ -4,6 +4,7 @@ Version: 0.1.0
 Summary: Explainable hallucination detection and mitigation using trusted sources and knowledge graphs
 License: MIT
 Requires-Python: <3.14,>=3.12
+License-File: LICENSE
 Requires-Dist: fastapi>=0.115
 Requires-Dist: uvicorn[standard]>=0.32
 Requires-Dist: pydantic>=2.9
@@ -16,6 +17,8 @@ Requires-Dist: networkx>=3.3
 Requires-Dist: numpy>=1.26
 Requires-Dist: pyyaml>=6.0
 Requires-Dist: python-json-logger>=2.0
+Requires-Dist: msgpack>=1.2.3
+Requires-Dist: urllib3>=2.8.0
 Provides-Extra: ml
 Requires-Dist: torch>=2.4; extra == "ml"
 Requires-Dist: transformers>=4.44; extra == "ml"
@@ -33,3 +36,4 @@ Requires-Dist: mypy>=1.13; extra == "dev"
 Requires-Dist: bandit>=1.7; extra == "dev"
 Requires-Dist: pip-audit>=2.7; extra == "dev"
 Requires-Dist: types-PyYAML; extra == "dev"
+Dynamic: license-file
