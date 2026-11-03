@@ -1,22 +1,14 @@
 # Module Design — P2 — NLP Input, Mitigation & Frontend Engineer
 
-Fill this in during your waves, not at the end. Every heading must be answered before your
-report chapter is written. A heading you cannot answer is an open issue, not a blank.
+Module design now lives in [`docs/design/`](../../docs/design/), one document per
+module, each answering the brief's six questions: what it does, why it exists,
+how it works internally, what alternatives exist, what could go wrong, and how it
+is tested.
 
-## Input validation and normalisation rules (and what is deliberately not normalised)
-## Sentence splitting and the char-offset invariant
-## Definition of an "atomic claim" — with 5 worked examples
-## Decomposition algorithm (dependency-based rules), and the optional LLM path
-## Malformed-LLM-output handling and fallback
-## Check-worthiness: fact vs opinion vs rhetoric — features and failure modes
-## Correction generation: inputs, grounding constraint, citation requirement
-## Abstention policy: thresholds and reasons
-## Annotated-text rendering and span alignment
-## Frontend information architecture and state model
-## Prompt-injection defence: where the data/instruction boundary is drawn
+This file was a per-person template. Keeping design notes in two places would
+guarantee they disagreed, and the module — not the person — is the right unit:
+ownership can change without the design document moving.
 
-## Alternatives considered and rejected (with reasons)
-
-## What could go wrong in production
-
-## How this is tested
+See [`docs/design/README.md`](../../docs/design/README.md) for the index and the
+owner of each document. Your per-change notes stay in
+[`explainer-log.md`](explainer-log.md).
