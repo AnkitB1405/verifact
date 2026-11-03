@@ -1,25 +1,14 @@
 # Module Design — P3 — Evidence & Knowledge Graph Engineer
 
-Fill this in during your waves, not at the end. Every heading must be answered before your
-report chapter is written. A heading you cannot answer is an open issue, not a blank.
+Module design now lives in [`docs/design/`](../../docs/design/), one document per
+module, each answering the brief's six questions: what it does, why it exists,
+how it works internally, what alternatives exist, what could go wrong, and how it
+is tested.
 
-## Source registry: schema, tiers, and the justification for each tier
-## Policy for unknown sources (lowest tier, never silently dropped)
-## Client design: caching, rate limits, retries, timeouts
-## SSRF controls
-## BM25: tokenisation, parameters
-## Dense retrieval: embedding model, index type, why flat
-## Reciprocal Rank Fusion: formula and k
-## Passage granularity and why
-## Entity linking: candidate generation, scoring, ambiguity handling
-## Subgraph construction: expansion depth, node cap, timing
-## Claim → triple mapping: the supported relation set (explicit list)
-## Consistency check: the four statuses and their rules
-## KG staleness: dated vs undated facts
-## ADR-003: NetworkX now, migration path to a graph DB and its trigger condition
+This file was a per-person template. Keeping design notes in two places would
+guarantee they disagreed, and the module — not the person — is the right unit:
+ownership can change without the design document moving.
 
-## Alternatives considered and rejected (with reasons)
-
-## What could go wrong in production
-
-## How this is tested
+See [`docs/design/README.md`](../../docs/design/README.md) for the index and the
+owner of each document. Your per-change notes stay in
+[`explainer-log.md`](explainer-log.md).
