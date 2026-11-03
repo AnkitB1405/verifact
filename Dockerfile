@@ -4,6 +4,10 @@ WORKDIR /app
 ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+# `python -m venv` seeds an older setuptools than the base image's system copy.
+# CVE-2025-47273 (path traversal) is fixed in 78.1.1; upgrade before installing
+# anything so the scan has nothing to report.
+RUN pip install --no-cache-dir --upgrade "pip" "setuptools>=78.1.1" "wheel"
 COPY pyproject.toml README.md ./
 COPY src ./src
 # Core only. The transformer extra is ~2GB and is installed at run time by

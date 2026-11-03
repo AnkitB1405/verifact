@@ -17,6 +17,14 @@ dependencies = [
   "numpy>=1.26",
   "pyyaml>=6.0",
   "python-json-logger>=2.0",
+  # Transitive dependencies pinned to patched versions. Trivy flagged these as
+  # HIGH in the container image, and each has a fix available, so they are
+  # upgraded rather than suppressed - a scan that is silenced is not a check.
+  #   msgpack  CVE-2026-114613  DoS via memory leak
+  #   urllib3  CVE-2026-97687   traffic interception
+  #   urllib3  CVE-2026-97689   DoS
+  "msgpack>=1.2.3",
+  "urllib3>=2.8.0",
 ]
 
 [project.optional-dependencies]
